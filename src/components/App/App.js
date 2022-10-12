@@ -8,8 +8,6 @@ import authOperations from 'redux/auth/authOperations';
 import RestrictedRoute from 'routes/RestrictedRoute';
 import PrivatRoute from 'routes/PrivateRoute';
 
-import { Box } from 'utils/Box';
-
 const HomePage = lazy(() => import('pages/HomePage'));
 const RegisterPage = lazy(() => import('pages/RegisterPage'));
 const LoginPage = lazy(() => import('pages/LoginPage'));
@@ -26,37 +24,30 @@ export const App = () => {
   return isRefreshing ? (
     <p>Refreshing user data...</p>
   ) : (
-    <Box maxWidth="1440px" ml="auto" mr="auto" pl="15px" pr="15px">
-      <Routes>
-        <Route path="/" element={<AppBar />}>
-          <Route index element={<HomePage />} />
+    <Routes>
+      <Route path="/" element={<AppBar />}>
+        <Route index element={<HomePage />} />
 
-          <Route
-            path="/register"
-            element={
-              <RestrictedRoute
-                component={RegisterPage}
-                redirectTo="/contacts"
-              />
-            }
-          />
+        <Route
+          path="/register"
+          element={
+            <RestrictedRoute component={RegisterPage} redirectTo="/contacts" />
+          }
+        />
 
-          <Route
-            path="/login"
-            element={
-              <RestrictedRoute component={LoginPage} redirectTo="/contacts" />
-            }
-          />
+        <Route
+          path="/login"
+          element={
+            <RestrictedRoute component={LoginPage} redirectTo="/contacts" />
+          }
+        />
 
-          <Route
-            path="/contacts"
-            element={
-              <PrivatRoute component={ContactsPage} redirectTo="/login" />
-            }
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Route>
-      </Routes>
-    </Box>
+        <Route
+          path="/contacts"
+          element={<PrivatRoute component={ContactsPage} redirectTo="/login" />}
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
+    </Routes>
   );
 };

@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { filterValue } from 'redux/filterSlice';
 import { selectFilterValue } from 'redux/selectors';
 
-import { StyledLabel, StyledInput } from 'components/Filter/Filter.styled';
-import { Box } from 'utils/Box';
+import { TextField, Container } from '@mui/material';
 
 export const Filter = () => {
   const filter = useSelector(selectFilterValue);
@@ -14,19 +13,29 @@ export const Filter = () => {
   };
 
   return (
-    <Box mb={4} mt={4}>
-      <StyledLabel>
-        Find contacts by name
-        <StyledInput
-          type="text"
-          name="filter"
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          required
+    <>
+      <Container
+        component="section"
+        maxWidth="sm"
+        sx={{
+          marginTop: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <TextField
           value={filter}
           onChange={handleFilterChange}
+          name="filter"
+          fullWidth
+          id="filter"
+          label="Find by name"
+          sx={{
+            marginTop: 2,
+          }}
         />
-      </StyledLabel>
-    </Box>
+      </Container>
+    </>
   );
 };

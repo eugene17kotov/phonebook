@@ -7,10 +7,7 @@ import {
 
 import { ContactItem } from 'components/ContactItem/ContactItem';
 
-import {
-  StyledContactList,
-  StyledContact,
-} from 'components/ContactList/ContactList.styled';
+import { Container, Grid, Box } from '@mui/material';
 
 export function ContactList() {
   const isLoading = useSelector(selectIsLoading);
@@ -19,19 +16,27 @@ export function ContactList() {
 
   return (
     <>
-      {isLoading && !error && <p>Loading contacts...</p>}
-      {error && <p>{error}</p>}
-      {filtredContacts.length > 0 && !error ? (
-        <StyledContactList>
-          {filtredContacts.map(({ id, name, number }) => (
-            <StyledContact key={id}>
-              <ContactItem id={id} name={name} number={number} />
-            </StyledContact>
-          ))}
-        </StyledContactList>
-      ) : (
-        !isLoading && <p>Not found any contact :(</p>
-      )}
+      <Container component="section" sx={{ marginTop: 2 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          {isLoading && !error && <p>Loading contacts...</p>}
+          {error && <p>{error}</p>}
+          {filtredContacts.length > 0 && !error ? (
+            <Grid container spacing={2} sx={{ marginTop: 1 }}>
+              {filtredContacts.map(({ id, name, number }) => (
+                <ContactItem key={id} id={id} name={name} number={number} />
+              ))}
+            </Grid>
+          ) : (
+            !isLoading && <p>Not found any contact :(</p>
+          )}
+        </Box>
+      </Container>
     </>
   );
 }

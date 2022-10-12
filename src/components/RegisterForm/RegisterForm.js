@@ -1,19 +1,25 @@
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom/dist';
 import authOperations from 'redux/auth/authOperations';
 
-const styles = {
-  form: {
-    width: 320,
-  },
-  label: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginBottom: 15,
-  },
-};
+import {
+  Container,
+  Typography,
+  Box,
+  Grid,
+  Link,
+  Checkbox,
+  FormControlLabel,
+  CssBaseline,
+  TextField,
+  Button,
+  Avatar,
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 export const RegisterForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -24,31 +30,102 @@ export const RegisterForm = () => {
       password: form.elements.password.value,
     };
 
+    if (!formData.name || !formData.email || !formData.password) return;
+
     dispatch(authOperations.register(formData));
 
     form.reset();
   };
 
+  const handleNavigateToLogin = () => {
+    navigate('/login');
+  };
+
   return (
     <>
-      <form onSubmit={handleSubmit} style={styles.form} autoComplete="off">
-        <label style={styles.label}>
-          Имя
-          <input type="text" name="name" />
-        </label>
-
-        <label style={styles.label}>
-          Почта
-          <input type="email" name="email" />
-        </label>
-
-        <label style={styles.label}>
-          Пароль
-          <input type="password" name="password" />
-        </label>
-
-        <button type="submit">Зарегистрироваться</button>
-      </form>
+      <Container component="main" maxWidth="xs" sx={{ pb: 4 }}>
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="name"
+                  label="User name"
+                  name="name"
+                  autoFocus
+                  autoComplete="off"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email address"
+                  name="email"
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <FormControlLabel
+                  control={
+                    <Checkbox value="allowExtraEmails" color="primary" />
+                  }
+                  label="I want to receive inspiration, marketing promotions and updates via email."
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link variant="body2" onClick={handleNavigateToLogin} href="#">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
     </>
   );
 };
