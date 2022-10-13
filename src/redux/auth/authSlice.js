@@ -6,33 +6,53 @@ const initialState = {
   token: null,
   isLoggedIn: false,
   isRefreshing: false,
+  isLoading: false,
+  error: null,
+};
+
+const handlePending = state => {
+  state.isLoading = true;
+};
+
+const handleRejected = (state, { payload }) => {
+  state.isLoading = false;
+  state.error = payload;
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   extraReducers: {
-    // [authOperations.register.pending](state, { payload }) {},
+    [authOperations.register.pending]: handlePending,
     [authOperations.register.fulfilled](state, { payload }) {
       state.user = payload.user;
       state.token = payload.token;
       state.isLoggedIn = true;
+      state.isLoading = false;
+      state.error = null;
     },
-    // [authOperations.register.rejected](state, { payload }) {},
-    // [authOperations.login.pending](state, { payload }) {},
+    [authOperations.register.rejected]: handleRejected,
+
+    [authOperations.login.pending]: handlePending,
     [authOperations.login.fulfilled](state, { payload }) {
       state.user = payload.user;
       state.token = payload.token;
       state.isLoggedIn = true;
+      state.isLoading = false;
+      state.error = null;
     },
-    // [authOperations.login.rejected](state, { payload }) {},
-    // [authOperations.logout.pending](state, { payload }) {},
+    [authOperations.login.rejected]: handleRejected,
+
+    [authOperations.logout.pending]: handlePending,
     [authOperations.logout.fulfilled](state) {
       state.user = { name: null, email: null };
       state.token = null;
       state.isLoggedIn = false;
+      state.isLoading = false;
+      state.error = null;
     },
-    // [authOperations.logout.rejected](state, { payload }) {},
+    [authOperations.logout.rejected]: handleRejected,
+
     [authOperations.refreshUser.pending](state) {
       state.isRefreshing = true;
     },

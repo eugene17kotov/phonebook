@@ -3,21 +3,26 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { selectContacts } from 'redux/selectors';
 import { addContact } from 'redux/operations';
+import { Snack } from 'components/Snack/Snack';
 
 import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Grid,
+  Box,
+  Container,
+} from '@mui/material';
 
 export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
+
+  const [isSnackOpen, setIsSnackOpen] = useState(false);
 
   const isContactInList = contactName => {
     const lowercaseName = contactName.toLowerCase();
@@ -40,6 +45,8 @@ export const ContactForm = () => {
     };
 
     dispatch(addContact(contactItem));
+
+    setIsSnackOpen(true);
 
     reset();
   };
@@ -68,6 +75,16 @@ export const ContactForm = () => {
 
   return (
     <>
+      {isSnackOpen && (
+        <Snack
+          isOpen={isSnackOpen}
+          handleClose={() => {
+            setIsSnackOpen(false);
+          }}
+          text="Contact created"
+          type="success"
+        />
+      )}
       <Container component="section" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -80,9 +97,7 @@ export const ContactForm = () => {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <PersonAddRoundedIcon />
           </Avatar>
-          {/* <Typography component="h2" variant="h5">
-            Add contact
-          </Typography> */}
+
           <Box
             component="form"
             noValidate
@@ -126,37 +141,6 @@ export const ContactForm = () => {
           </Box>
         </Box>
       </Container>
-
-      {/* <StyledContactForm onSubmit={handleFormSubmit}>
-        <StyledLabel>
-          Name
-          <StyledInput
-            type="text"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-            value={name}
-            onChange={handleInputChange}
-          />
-        </StyledLabel>
-        <StyledLabel>
-          Telephone
-          <StyledInput
-            type="tel"
-            name="number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-            value={number}
-            onChange={handleInputChange}
-          />
-        </StyledLabel>
-
-        <Button variant="contained" type="submit">
-          Add contact
-        </Button>
-      </StyledContactForm> */}
     </>
   );
 };

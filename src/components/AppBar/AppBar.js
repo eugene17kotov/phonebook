@@ -8,7 +8,13 @@ import UserMenu from 'components/UserMenu/UserMenu';
 import AuthNav from 'components/AuthNav/AuthNav';
 import Footer from 'components/Footer/Footer';
 
-import {AppBar, Toolbar, Container} from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  Container,
+  CircularProgress,
+  Box,
+} from '@mui/material';
 
 export default function StyledAppBar() {
   const isLoggedIn = useSelector(authSelectors.selectIsLoggedIn);
@@ -24,7 +30,20 @@ export default function StyledAppBar() {
         </Container>
       </AppBar>
 
-      <Suspense fallback={<div>Loading page...</div>}>
+      <Suspense
+        fallback={
+          <Box sx={{ width: '100vw', height: '100vh', position: 'relative' }}>
+            <CircularProgress
+              sx={{
+                position: 'absolute',
+                top: '40%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+              }}
+            />
+          </Box>
+        }
+      >
         <Outlet />
       </Suspense>
 

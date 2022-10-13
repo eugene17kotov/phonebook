@@ -6,8 +6,9 @@ import {
 } from 'redux/selectors';
 
 import { ContactItem } from 'components/ContactItem/ContactItem';
+import { Snack } from 'components/Snack/Snack';
 
-import { Container, Grid, Box } from '@mui/material';
+import { Container, Grid, Box, CircularProgress } from '@mui/material';
 
 export function ContactList() {
   const isLoading = useSelector(selectIsLoading);
@@ -24,7 +25,7 @@ export function ContactList() {
             alignItems: 'center',
           }}
         >
-          {isLoading && !error && <p>Loading contacts...</p>}
+          {isLoading && !error && <CircularProgress sx={{ mt: 4 }} />}
           {error && <p>{error}</p>}
           {filtredContacts.length > 0 && !error ? (
             <Grid container spacing={2} sx={{ marginTop: 1 }}>
@@ -33,7 +34,7 @@ export function ContactList() {
               ))}
             </Grid>
           ) : (
-            !isLoading && <p>Not found any contact :(</p>
+            !isLoading && <Snack type="error" text="Not found any contact :(" />
           )}
         </Box>
       </Container>

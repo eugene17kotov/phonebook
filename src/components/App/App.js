@@ -8,6 +8,8 @@ import authOperations from 'redux/auth/authOperations';
 import RestrictedRoute from 'routes/RestrictedRoute';
 import PrivatRoute from 'routes/PrivateRoute';
 
+import { CircularProgress, Box } from '@mui/material';
+
 const HomePage = lazy(() => import('pages/HomePage'));
 const RegisterPage = lazy(() => import('pages/RegisterPage'));
 const LoginPage = lazy(() => import('pages/LoginPage'));
@@ -22,7 +24,16 @@ export const App = () => {
   }, [dispatch]);
 
   return isRefreshing ? (
-    <p>Refreshing user data...</p>
+    <Box sx={{ width: '100vw', height: '100vh', position: 'relative' }}>
+      <CircularProgress
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      />
+    </Box>
   ) : (
     <Routes>
       <Route path="/" element={<AppBar />}>
