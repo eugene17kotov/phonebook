@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     {/* <MyStyleReset /> */}
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter basename="goit-react-hw-08-phonebook">
+        <BrowserRouter basename="phonebook">
           <ThemeProvider theme={theme}>
             <App />
           </ThemeProvider>
